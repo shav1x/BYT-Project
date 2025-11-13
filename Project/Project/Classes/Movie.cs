@@ -6,8 +6,8 @@ public class Movie
 {
     private string _name;
     private decimal _duration;
-    private List<Genre> _genres = new ();
-    private List<String>? _language = new ();
+    private List<Genre> _genres;
+    private List<String>? _language;
     private DateTime _releaseDate;
     private int _minAge;
 
@@ -24,7 +24,7 @@ public class Movie
         }
     }
     
-    public required string Name
+    public string Name
     {
         get => _name;
         set
@@ -38,7 +38,7 @@ public class Movie
         }
     }
 
-    public required decimal Duration
+    public decimal Duration
     {
         get => _duration;
         set
@@ -51,7 +51,7 @@ public class Movie
         }
     }
 
-    public required List<Genre> Genres
+    public List<Genre> Genres
     {
         get => _genres;
         set
@@ -65,7 +65,7 @@ public class Movie
         }
     }
 
-    public required DateTime ReleaseDate
+    public DateTime ReleaseDate
     {
         get => _releaseDate;
         set
