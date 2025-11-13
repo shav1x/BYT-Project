@@ -15,7 +15,7 @@ public class Customer : Person
                 throw new ArgumentException("Bonus points cannot be negative");
             }
             
-            _bonusPoints = value;
+            _bonusPoints += value;
         }
     }
 
