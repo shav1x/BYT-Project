@@ -1,3 +1,1 @@
-﻿ASd shototam fghj
-biber
-shav1x
+﻿Console.WriteLine("Hello world");
