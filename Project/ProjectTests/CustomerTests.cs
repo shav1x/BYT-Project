@@ -19,7 +19,7 @@ public class CustomerTests
     
     [TestCase("John")]
     [TestCase("Ben")]
-    [TestCase("abdula")]
+    [TestCase("Jester")]
     [TestCase("name")]
     public void CustomerName_ValidName_True(string name)
     {
