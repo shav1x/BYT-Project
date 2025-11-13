@@ -3,7 +3,7 @@ namespace Project.Classes;
 public class Staff : Person
 {
     private decimal _salary;
-    private string? _role;
+    private string _role;
     
     public decimal Salary
     {
