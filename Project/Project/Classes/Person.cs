@@ -10,7 +10,7 @@ public abstract class Person
     private string? _phone;
     private DateTime _birthDate;
 
-    public required string Name
+    public string Name
     {
         get => _name;
         set
@@ -25,7 +25,7 @@ public abstract class Person
         }
     }
 
-    public required string Surname
+    public string Surname
     {
         get => _surname;
         set
@@ -40,7 +40,7 @@ public abstract class Person
         }
     }
 
-    public required string Email
+    public string Email
     {
         get => _email;
         set
@@ -70,7 +70,7 @@ public abstract class Person
         }
     }
 
-    public required DateTime BirthDate
+    public DateTime BirthDate
     {
         get => _birthDate;
         set
@@ -87,6 +87,10 @@ public abstract class Person
     public int Age =>
         DateTime.Today.Year - BirthDate.Year -
         (BirthDate > DateTime.Today.AddYears(-(DateTime.Today.Year - BirthDate.Year)) ? 1 : 0);
+
+    protected Person()
+    {
+    }
 
     public Person(string name, string surname, DateTime birthDate, string email, string? phone)
     {
