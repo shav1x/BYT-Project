@@ -4,50 +4,96 @@ namespace Project.Classes;
 
 public abstract class Person
 {
-    public required string Name { get; set; }
-
-    public required string Surname { get; set; }
-
+    private string _name;
+    private string _surname;
     private string _email;
+    private string? _phone;
+    private DateTime _birthDate;
+
+    public required string Name
+    {
+        get => _name;
+        set
+        {
+            if (string.IsNullOrWhiteSpace(value) ||
+                !Regex.IsMatch(value, @"^[A-Za-z]+$"))
+            {
+                throw new ArgumentException("Name must contain only letters.");
+            }
+
+            _name = value;
+        }
+    }
+
+    public required string Surname
+    {
+        get => _surname;
+        set
+        {
+            if (string.IsNullOrWhiteSpace(value) ||
+                !Regex.IsMatch(value, @"^[A-Za-z]+$"))
+            {
+                throw new ArgumentException("Surname must contain only letters.");
+            }
+
+            _surname = value;
+        }
+    }
 
     public required string Email
     {
         get => _email;
         set
         {
-            if (string.IsNullOrWhiteSpace(value) || !Regex.IsMatch(value, @"^[^@\s]+@[^@\s]+\.[^@\s]+$"))
+            if (string.IsNullOrWhiteSpace(value) ||
+                !Regex.IsMatch(value, @"^[^@\s]+@[^@\s]+\.[^@\s]+$"))
             {
-                throw new ArgumentException("Invalid email format", nameof(Email));
+                throw new ArgumentException("Invalid email format.");
             }
+
             _email = value;
         }
     }
 
-    public string? Phone { get; set; }
+    public string? Phone
+    {
+        get => _phone;
+        set
+        {
+            if (value != null &&
+                !Regex.IsMatch(value, @"^[0-9]+$"))
+            {
+                throw new ArgumentException("Phone must contain only numbers.");
+            }
 
-    private DateTime _dateOfBirth;
+            _phone = value;
+        }
+    }
 
     public required DateTime BirthDate
     {
-        get => _dateOfBirth;
+        get => _birthDate;
         set
         {
             if (value > DateTime.Today)
             {
-                throw new ArgumentException("Date of birth cannot be in the future", nameof(BirthDate));
+                throw new ArgumentException("Birth date cannot be in the future.");
             }
-            _dateOfBirth = value;
+
+            _birthDate = value;
         }
     }
 
-    public int Age => DateTime.Today.Year - BirthDate.Year - (BirthDate > DateTime.Today.AddYears(-(DateTime.Today.Year - BirthDate.Year)) ? 1 : 0);
+    public int Age =>
+        DateTime.Today.Year - BirthDate.Year -
+        (BirthDate > DateTime.Today.AddYears(-(DateTime.Today.Year - BirthDate.Year)) ? 1 : 0);
 
-    protected Person(string name, string surname, DateTime dateOfBirth, string email, string? phone)
+    protected Person(string name, string surname, DateTime birthDate, string email, string? phone)
     {
-        _email = email;
-        _dateOfBirth = dateOfBirth;
-        Name = name;
+        Name = name;          
         Surname = surname;
+        BirthDate = birthDate;
+        Email = email;
         Phone = phone;
     }
 }
