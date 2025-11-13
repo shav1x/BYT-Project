@@ -29,8 +29,7 @@ public class Movie
         get => _name;
         set
         {
-            if (string.IsNullOrWhiteSpace(value) ||
-                !Regex.IsMatch(value, @"^[A-Za-z]+$"))
+            if (string.IsNullOrWhiteSpace(value))
             {
                 throw new ArgumentException("Name must contain only letters.");
             }
