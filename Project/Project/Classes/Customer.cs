@@ -5,7 +5,19 @@ public class Customer : Person
     private static int _customerCount = 0;
     public readonly int AccountId = _customerCount + 1;
 
-    public int BonusPoints { get; set; } = 0;
+    private int _bonusPoints;
+    public int BonusPoints
+    {
+        get => _bonusPoints;
+        set{
+            if (value < 0)
+            {
+                throw new ArgumentException("Bonus points cannot be negative");
+            }
+            
+            _bonusPoints = value;
+        }
+    }
 
     public Customer(string name, string surname, DateTime dateOfBirth, string email, string? phone) : base(name, surname, dateOfBirth, email, phone)
     {
