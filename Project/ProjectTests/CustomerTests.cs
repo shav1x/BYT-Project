@@ -3,8 +3,19 @@ using Project.Classes;
 namespace ProjectTests;
 
 [TestFixture]
-public class Tests
+public class CustomerTests
 {
+    
+    [Test]
+    public void Constructor_ValidData_CreatesCustomer()
+    {
+        var customer = new Customer("John", "Smith", DateTime.Now.AddYears(-20), "mail@gmail.com", "0712345678");
+        Assert.That(customer.Name, Is.EqualTo("John"));
+        Assert.That(customer.Surname, Is.EqualTo("Smith"));
+        Assert.That(customer.Email, Is.EqualTo("mail@gmail.com"));
+        Assert.That(customer.Phone, Is.EqualTo("0712345678"));
+        Assert.That(customer.Age, Is.EqualTo(19));
+    }
     
     [TestCase("John")]
     [TestCase("Ben")]
@@ -20,7 +31,7 @@ public class Tests
     [TestCase("John123")]
     [TestCase("some name")]
     [TestCase("")]
-    public void CustomerName_InvalidName_ThrowsException(string name)
+    public void CustomerName_InvalidName_ThrowsArgumentException(string name)
     {
         Assert.That(
             () => new Customer(name, "Smith", DateTime.Now.AddYears(-20), "mail@gmail.com", "0712345678"),
@@ -43,7 +54,7 @@ public class Tests
     [TestCase("@com")]
     [TestCase("mail@gmail.")]
     [TestCase("")]
-    public void CustomerEmail_InvalidEmail_ThrowsException(string email)
+    public void CustomerEmail_InvalidEmail_ThrowsArgumentException(string email)
     {
         Assert.That(
             () => new Customer("John", "Smith", DateTime.Now.AddYears(-20), email, "0712345678"),
@@ -65,7 +76,7 @@ public class Tests
     [TestCase("32485F19")]
     [TestCase("+238472")]
     [TestCase("56-482-24")]
-    public void CustomerPhone_InvalidPhone_ThrowsException(string phone)
+    public void CustomerPhone_InvalidPhone_ThrowsArgumentException(string phone)
     {
         Assert.That(
             () => new Customer("John", "Smith", DateTime.Now.AddYears(-20), "example@mail.com", phone),
