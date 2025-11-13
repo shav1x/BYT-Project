@@ -7,7 +7,7 @@ public class Customer : Person
 
     public int BonusPoints { get; set; } = 0;
 
-    public Customer()
+    public Customer(string name, string surname, DateTime dateOfBirth, string email, string? phone) : base(name, surname, dateOfBirth, email, phone)
     {
         _customerCount++;
     }
