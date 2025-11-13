@@ -88,7 +88,7 @@ public abstract class Person
         DateTime.Today.Year - BirthDate.Year -
         (BirthDate > DateTime.Today.AddYears(-(DateTime.Today.Year - BirthDate.Year)) ? 1 : 0);
 
-    protected Person(string name, string surname, DateTime birthDate, string email, string? phone)
+    public Person(string name, string surname, DateTime birthDate, string email, string? phone)
     {
         Name = name;          
         Surname = surname;
