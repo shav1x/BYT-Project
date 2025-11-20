@@ -92,7 +92,7 @@ public abstract class Person
     {
     }
 
-    public Person(string name, string surname, DateTime birthDate, string email, string? phone)
+    protected Person(string name, string surname, DateTime birthDate, string email, string? phone)
     {
         Name = name;          
         Surname = surname;
