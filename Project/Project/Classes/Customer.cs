@@ -1,18 +1,12 @@
-﻿using System.Xml.Serialization;
+﻿namespace Project.Classes;
 
-namespace Project.Classes;
-
-[Serializable]
-[XmlRoot("Customer")]
 public class Customer : Person
 {
     private static List<Customer> _customers = new List<Customer>();
     
     private static int _customerCount = 0;
-    [XmlAttribute("id")]
     public readonly int AccountId = _customerCount + 1;
-
-    [XmlElement("BonusPoints")]
+    
     private int _bonusPoints;
     public int BonusPoints
     {
@@ -27,12 +21,9 @@ public class Customer : Person
         }
     }
 
-    public Customer() : base()
-    {
-    }
-
     public Customer(string name, string surname, DateTime dateOfBirth, string email, string? phone) : base(name, surname, dateOfBirth, email, phone)
     {
+        BonusPoints = 0;
         _customerCount++;
         _customers.Add(this);
     }
