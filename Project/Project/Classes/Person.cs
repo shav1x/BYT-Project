@@ -9,6 +9,10 @@ public abstract class Person
     private string _email;
     private string? _phone;
     private DateTime _birthDate;
+    
+    public int Age =>
+        DateTime.Today.Year - BirthDate.Year -
+        (BirthDate > DateTime.Today.AddYears(-(DateTime.Today.Year - BirthDate.Year)) ? 1 : 0);
 
     public string Name
     {
@@ -83,11 +87,7 @@ public abstract class Person
             _birthDate = value;
         }
     }
-
-    public int Age =>
-        DateTime.Today.Year - BirthDate.Year -
-        (BirthDate > DateTime.Today.AddYears(-(DateTime.Today.Year - BirthDate.Year)) ? 1 : 0);
-
+    
     protected Person()
     {
     }
