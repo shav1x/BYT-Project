@@ -9,9 +9,9 @@ public class CustomerTests
     [Test]
     public void Constructor_ValidData_CreatesCustomer()
     {
-        var customer = new Customer("John", "Smith", DateTime.Now.AddYears(-20), "mail@gmail.com", "0712345678");
-        Assert.That(customer.Name, Is.EqualTo("John"));
-        Assert.That(customer.Surname, Is.EqualTo("Smith"));
+        var customer = new Customer("Ben", "Ten", DateTime.Now.AddYears(-20), "mail@gmail.com", "0712345678");
+        Assert.That(customer.Name, Is.EqualTo("Ben"));
+        Assert.That(customer.Surname, Is.EqualTo("Ten"));
         Assert.That(customer.Email, Is.EqualTo("mail@gmail.com"));
         Assert.That(customer.Phone, Is.EqualTo("0712345678"));
         Assert.That(customer.Age, Is.EqualTo(19));
@@ -19,7 +19,7 @@ public class CustomerTests
     
     [TestCase("John")]
     [TestCase("Ben")]
-    [TestCase("abdula")]
+    [TestCase("Jester")]
     [TestCase("name")]
     public void CustomerName_ValidName_True(string name)
     {
