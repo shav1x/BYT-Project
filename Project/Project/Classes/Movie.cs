@@ -4,12 +4,13 @@ namespace Project.Classes;
 
 public class Movie
 {
-    private static List<Movie> _movies = new List<Movie>();
-    
-    private string _name;
+    private static readonly List<Movie> _extent = new();
+    public static IReadOnlyList<Movie> Extent => _extent.AsReadOnly();
+
+    private string _name = null!;
     private decimal _duration;
-    private List<Genre> _genres;
-    private List<String>? _language;
+    private List<Genre> _genres = new();
+    private List<string>? _languages;
     private DateTime _releaseDate;
     
     private static readonly int DefaultMinAge = 3;
@@ -21,19 +22,19 @@ public class Movie
         set
         {
             if (value < DefaultMinAge)
-            {
                 throw new ArgumentException("Minimum age cannot be less than 3.");
-            }
+
             _minAge = value;
         }
     }
-    
+
     public string Name
     {
         get => _name;
         set
         {
-            if (string.IsNullOrWhiteSpace(value))
+            if (string.IsNullOrWhiteSpace(value) ||
+                !Regex.IsMatch(value, @"^[A-Za-z ]+$"))
             {
                 throw new ArgumentException("Name must contain only letters.");
             }
@@ -48,9 +49,8 @@ public class Movie
         set
         {
             if (value <= 0)
-            {
                 throw new ArgumentException("Duration must be greater than 0.");
-            }
+
             _duration = value;
         }
     }
@@ -60,11 +60,9 @@ public class Movie
         get => _genres;
         set
         {
-            if (value.Count < 1)
-            {
+            if (value is null || value.Count < 1)
                 throw new ArgumentException("Movie must have at least one genre.");
-            }
-            
+
             _genres = value;
         }
     }
@@ -75,31 +73,47 @@ public class Movie
         set
         {
             if (value > DateTime.Today)
-            {
                 throw new ArgumentException("Release date cannot be in the future.");
-            }
+
             _releaseDate = value;
         }
     }
 
-    public List<String>? Languages
+    public List<string>? Languages
     {
-        get => _language;
+        get => _languages;
         set
         {
-            if (value == null) return;
-            for (int i = 0; i < value.Count; i++)
+            if (value is null)
             {
-                if (!Regex.IsMatch(value[i], @"^[A-Za-z]+$"))
-                {
-                    throw new ArgumentException("Language must contain only letters.");
-                }
+                _languages = null;
+                return;
             }
-            _language = value;
+
+            foreach (var lang in value)
+            {
+                if (!Regex.IsMatch(lang, @"^[A-Za-z]+$"))
+                    throw new ArgumentException("Language must contain only letters.");
+            }
+
+            _languages = value;
         }
     }
     
-    public Movie(string name, decimal duration, List<Genre> genres, DateTime releaseDate, List<string>? languages, int? minAge)
+    public Movie()
+    {
+        _genres = new List<Genre>();
+        _languages = new List<string>();
+    }
+    
+    public Movie(
+        string name,
+        decimal duration,
+        List<Genre> genres,
+        DateTime releaseDate,
+        List<string>? languages,
+        int? minAge
+    )
     {
         Name = name;
         Duration = duration;
@@ -107,6 +121,17 @@ public class Movie
         ReleaseDate = releaseDate;
         Languages = languages;
         MinAge = minAge ?? DefaultMinAge;
-        _movies.Add(this);
+
+        _extent.Add(this);
+    }
+    
+    public static void LoadExtent(List<Movie>? movies)
+    {
+        _extent.Clear();
+
+        if (movies is null || movies.Count == 0)
+            return;
+
+        _extent.AddRange(movies);
     }
 }
