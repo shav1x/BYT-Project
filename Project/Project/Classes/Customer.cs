@@ -6,6 +6,8 @@ namespace Project.Classes;
 [XmlRoot("Customer")]
 public class Customer : Person
 {
+    private static List<Customer> _customers = new List<Customer>();
+    
     private static int _customerCount = 0;
     [XmlAttribute("id")]
     public readonly int AccountId = _customerCount + 1;
@@ -32,5 +34,6 @@ public class Customer : Person
     public Customer(string name, string surname, DateTime dateOfBirth, string email, string? phone) : base(name, surname, dateOfBirth, email, phone)
     {
         _customerCount++;
+        _customers.Add(this);
     }
 }

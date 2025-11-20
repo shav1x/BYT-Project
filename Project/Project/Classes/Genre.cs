@@ -4,6 +4,8 @@ namespace Project.Classes;
 
 public class Genre
 {
+    private static List<Genre> _genres = new List<Genre>();
+    
     private string _name;
 
     public string Name
@@ -22,5 +24,6 @@ public class Genre
     public Genre(string name)
     {
         Name = name;
+        _genres.Add(this);
     }
 }

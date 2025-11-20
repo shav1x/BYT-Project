@@ -2,6 +2,8 @@ namespace Project.Classes;
 
 public class Staff : Person
 {
+    private static List<Staff> _staff = new List<Staff>();
+    
     private decimal _salary;
     private string _role;
     
@@ -33,5 +35,6 @@ public class Staff : Person
     {
         Role = role;
         Salary = salary;
+        _staff.Add(this);
     }
 }

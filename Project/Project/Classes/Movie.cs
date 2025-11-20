@@ -4,6 +4,8 @@ namespace Project.Classes;
 
 public class Movie
 {
+    private static List<Movie> _movies = new List<Movie>();
+    
     private string _name;
     private decimal _duration;
     private List<Genre> _genres;
@@ -105,5 +107,6 @@ public class Movie
         ReleaseDate = releaseDate;
         Languages = languages;
         MinAge = minAge ?? DefaultMinAge;
+        _movies.Add(this);
     }
 }
