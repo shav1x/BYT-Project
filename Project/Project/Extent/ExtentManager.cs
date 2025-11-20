@@ -20,6 +20,9 @@ public static class ExtentManager
         var root = new ExtentRoot
         {
             Customers = Customer.Extent.ToList(),
+            StaffMembers = Staff.Extent.ToList(),
+            Movies = Movie.Extent.ToList(),
+            Genres = Genre.Extent.ToList()
         };
 
         var json = JsonSerializer.Serialize(root, _options);
@@ -38,5 +41,8 @@ public static class ExtentManager
             return;
 
         Customer.LoadExtent(root.Customers);
+        Staff.LoadExtent(root.StaffMembers);
+        Movie.LoadExtent(root.Movies);
+        Genre.LoadExtent(root.Genres);
     }
 }
