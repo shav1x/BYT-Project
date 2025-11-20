@@ -9,6 +9,8 @@ public class Movie
     private List<Genre> _genres;
     private List<String>? _language;
     private DateTime _releaseDate;
+    
+    private static readonly int DefaultMinAge = 3;
     private int _minAge;
 
     public int MinAge
@@ -16,7 +18,7 @@ public class Movie
         get => _minAge;
         set
         {
-            if (value < 3)
+            if (value < DefaultMinAge)
             {
                 throw new ArgumentException("Minimum age cannot be less than 3.");
             }
@@ -102,6 +104,6 @@ public class Movie
         Genres = genres;
         ReleaseDate = releaseDate;
         Languages = languages;
-        MinAge = minAge ?? 3;
+        MinAge = minAge ?? DefaultMinAge;
     }
 }
