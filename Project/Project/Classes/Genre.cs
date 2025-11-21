@@ -15,7 +15,7 @@ public class Genre
         set
         {
             if (string.IsNullOrWhiteSpace(value) ||
-                !Regex.IsMatch(value, @"^[A-Za-z]+$"))
+                !Regex.IsMatch(value, @"^[A-Za-z ]+$"))
             {
                 throw new ArgumentException("Genre name must contain only letters.");
             }

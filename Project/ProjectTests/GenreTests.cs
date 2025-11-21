@@ -38,7 +38,6 @@ public class GenreTests
     [TestCase("Action1")]
     [TestCase("Romance!")]
     [TestCase("123")]
-    [TestCase("Crime Drama")]
     public void GenreName_InvalidMovieGenre_ThrowsArgumentException(string invalidMovieGenre)
     {
         var genre = new Genre();
