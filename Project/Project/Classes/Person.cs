@@ -7,7 +7,8 @@ public abstract class Person
     private string _name = null!;
     private string _surname = null!;
     private string _email = null!;
-    private string? _phone;
+    private Phone? _phone;
+    
     private DateTime _birthDate;
 
     public int Age =>
@@ -56,17 +57,10 @@ public abstract class Person
         }
     }
 
-    public string? Phone
+    public Phone? Phone
     {
         get => _phone;
-        set
-        {
-            if (value != null && !Regex.IsMatch(value, @"^[0-9]+$"))
-            {
-                throw new ArgumentException("Phone must contain only numbers.");
-            }
-            _phone = value;
-        }
+        set => _phone = value;
     }
 
     public DateTime BirthDate
@@ -83,7 +77,12 @@ public abstract class Person
     
     protected Person() { }
 
-    protected Person(string name, string surname, DateTime birthDate, string email, string? phone)
+    protected Person(
+        string name,
+        string surname,
+        DateTime birthDate,
+        string email,
+        Phone? phone)
     {
         Name = name;
         Surname = surname;

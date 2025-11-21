@@ -30,7 +30,7 @@ public class Customer : Person
         string surname,
         DateTime birthDate,
         string email,
-        string? phone
+        Phone? phone
     ) : base(name, surname, birthDate, email, phone)
     {
         AccountId = ++_lastAccountId;

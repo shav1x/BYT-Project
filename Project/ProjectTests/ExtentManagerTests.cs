@@ -62,8 +62,19 @@ public class ExtentManagerTests
     [Test]
     public void SaveAndLoad_RestoresCustomers()
     {
-        var c1 = new Customer("Andrii", "Meshcheriakov", DateTime.Now.AddYears(-20), "mail@mail.com", "12345");
-        var c2 = new Customer("Bohdan", "Milashevskyi", DateTime.Now.AddYears(-30), "gg@mail.com", "54321");
+        var c1 = new Customer(
+            "Andrii", "Meshcheriakov",
+            DateTime.Now.AddYears(-20),
+            "mail@mail.com",
+            new Phone("+1", "12345")
+        );
+
+        var c2 = new Customer(
+            "Bohdan", "Milashevskyi",
+            DateTime.Now.AddYears(-30),
+            "gg@mail.com",
+            new Phone("+1", "54321")
+        );
 
         ExtentManager.SaveAll();
 

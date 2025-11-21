@@ -41,7 +41,7 @@ public class Staff : Person
         string surname,
         DateTime birthDate,
         string email,
-        string? phone,
+        Phone? phone,
         string role,
         decimal salary
     ) : base(name, surname, birthDate, email, phone)

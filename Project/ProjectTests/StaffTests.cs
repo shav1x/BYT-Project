@@ -13,7 +13,8 @@ public class StaffTests
     {
         var staff = new Staff(
             "Andrii", "Meshcheriakov", DateTime.Now.AddYears(-20),
-            "ma@gmail.com", "4848484848",
+            "ma@gmail.com",
+            new Phone("+48", "484848484"),
             role, 1200
         );
 
@@ -28,7 +29,8 @@ public class StaffTests
         Assert.That(
             () => new Staff(
                 "Andrii", "Meshcheriakov", DateTime.Now.AddYears(-20),
-                "ma@gmail.com", "4848484848",
+                "ma@gmail.com",
+                new Phone("+48", "484848484"),
                 role!, 1200
             ),
             Throws.TypeOf<ArgumentException>()
@@ -42,7 +44,8 @@ public class StaffTests
     {
         var staff = new Staff(
             "Andrii", "Meshcheriakov", DateTime.Now.AddYears(-20),
-            "test@gmail.com", "4848484848",
+            "test@gmail.com",
+            new Phone("+48", "484848484"),
             "Developer", salary
         );
 
@@ -57,10 +60,44 @@ public class StaffTests
         Assert.That(
             () => new Staff(
                 "Andrii", "Meshcheriakov", DateTime.Now.AddYears(-20),
-                "ma@gmail.com", "4848484848",
+                "ma@gmail.com",
+                new Phone("+48", "484848484"),
                 "Developer", salary
             ),
             Throws.TypeOf<ArgumentException>()
         );
     }
+    
+    [Test]
+    public void StaffPhone_ValidPhone_AssignedCorrectly()
+    {
+        var phone = new Phone("+48", "999111222");
+    
+        var staff = new Staff(
+            "Andrii", "Meshcheriakov",
+            DateTime.Now.AddYears(-20),
+            "test@gmail.com",
+            phone,
+            "Developer",
+            1200
+        );
+
+        Assert.That(staff.Phone, Is.EqualTo(phone));
+    }
+
+    [Test]
+    public void StaffPhone_NullPhone_AssignedCorrectly()
+    {
+        var staff = new Staff(
+            "Andrii", "Meshcheriakov",
+            DateTime.Now.AddYears(-20),
+            "test@gmail.com",
+            null,
+            "Developer",
+            1200
+        );
+
+        Assert.That(staff.Phone, Is.Null);
+    }
+
 }
