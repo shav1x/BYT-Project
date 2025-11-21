@@ -6,10 +6,6 @@ namespace ProjectTests;
 [TestFixture]
 public class PhoneTests
 {
-    // -------------------------------
-    // VALID COUNTRY CODE TESTS
-    // -------------------------------
-
     [TestCase("+380")]
     [TestCase("+1")]
     [TestCase("380")]
@@ -23,10 +19,6 @@ public class PhoneTests
 
         Assert.That(phone.CountryCode, Is.EqualTo(countryCode.Trim()));
     }
-
-    // -------------------------------
-    // INVALID COUNTRY CODE TESTS
-    // -------------------------------
 
     [TestCase("++380")]
     [TestCase("38-0")]
@@ -42,10 +34,6 @@ public class PhoneTests
         );
     }
 
-    // -------------------------------
-    // VALID PHONE NUMBER TESTS
-    // -------------------------------
-
     [TestCase("1234567")]
     [TestCase("55555")]
     [TestCase("9328421")]
@@ -57,11 +45,7 @@ public class PhoneTests
 
         Assert.That(phone.Number, Is.EqualTo(number.Trim()));
     }
-
-    // -------------------------------
-    // INVALID PHONE NUMBER TESTS
-    // -------------------------------
-
+    
     [TestCase("123A56")]
     [TestCase("123-4567")]
     [TestCase("")]
@@ -74,11 +58,7 @@ public class PhoneTests
             Throws.TypeOf<ArgumentException>()
         );
     }
-
-    // -------------------------------
-    // ToString() TEST
-    // -------------------------------
-
+    
     [Test]
     public void ToString_ReturnsCountryCodePlusNumber()
     {
