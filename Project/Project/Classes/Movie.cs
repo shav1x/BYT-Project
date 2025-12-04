@@ -10,7 +10,6 @@ public class Movie
     private string _name = null!;
     private decimal _duration;
     
-    private readonly List<Genre> _genres = new();
     public List<Genre> Genres { get; set; } = new();
 
     private List<string>? _languages = new();
@@ -110,6 +109,11 @@ public class Movie
 
         Genres.AddRange(genres);
 
+        foreach (var genre in genres)
+        {
+            genre.AddMovie(this);
+        }
+
         if(languages == null)
             _languages = null;
         else
@@ -126,16 +130,16 @@ public class Movie
     public void AddGenre(Genre genre)
     {
         if (genre == null) throw new ArgumentNullException(nameof(genre));
-        if (_genres.Contains(genre)) return;
+        if (Genres.Contains(genre)) return;
 
-        _genres.Add(genre);
+        Genres.Add(genre);
         genre.AddMovie(this);
     }
 
     public void RemoveGenre(Genre genre)
     {
         if (genre == null) throw new ArgumentNullException(nameof(genre));
-        if (!_genres.Remove(genre)) return;
+        if (!Genres.Remove(genre)) return;
 
         genre.RemoveMovie(this);
     }

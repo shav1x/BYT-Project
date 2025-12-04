@@ -12,7 +12,7 @@ public class Genre
     private readonly List<Movie> _movies = new();
     
     [JsonIgnore] 
-    public IReadOnlyList<Movie> Movies => _movies.AsReadOnly();
+    public List<Movie> Movies => _movies;
 
     public string Name
     {
