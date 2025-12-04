@@ -85,6 +85,7 @@ public class Seat
         if (_auditorium != null)
         {
             _auditorium.RemoveSeat(this);
+            _auditorium = null;
             _extent.Remove(this);
         }
     }
