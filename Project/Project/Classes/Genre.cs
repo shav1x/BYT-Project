@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using System.Text.RegularExpressions;
 
 namespace Project.Classes;
@@ -8,6 +9,10 @@ public class Genre
     public static IReadOnlyList<Genre> Extent => _extent.AsReadOnly();
 
     private string _name = null!;
+    private readonly List<Movie> _movies = new();
+    
+    [JsonIgnore] 
+    public IReadOnlyList<Movie> Movies => _movies.AsReadOnly();
 
     public string Name
     {
@@ -17,7 +22,7 @@ public class Genre
             if (string.IsNullOrWhiteSpace(value) ||
                 !Regex.IsMatch(value, @"^[A-Za-z ]+$"))
             {
-                throw new ArgumentException("Genre name must contain only letters.");
+                throw new ArgumentException("Genre name must contain only letters and spaces.");
             }
 
             _name = value;
@@ -31,7 +36,20 @@ public class Genre
         Name = name;
         _extent.Add(this);
     }
-    
+
+    internal void AddMovieInternal(Movie movie)
+    {
+        if (movie == null) throw new ArgumentNullException(nameof(movie));
+        if (_movies.Contains(movie)) return;
+
+        _movies.Add(movie);
+    }
+
+    internal void RemoveMovieInternal(Movie movie)
+    {
+        _movies.Remove(movie);
+    }
+
     public static void LoadExtent(List<Genre>? genres)
     {
         _extent.Clear();

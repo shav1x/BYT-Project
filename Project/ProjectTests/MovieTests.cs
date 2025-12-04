@@ -132,7 +132,7 @@ public class MovieTests
     }
     
     [Test]
-    public void Constructor_NullLanguages_AllowsNull()
+    public void Constructor_NullLanguages()
     {
         var movie = new Movie(
             "Vitalik",

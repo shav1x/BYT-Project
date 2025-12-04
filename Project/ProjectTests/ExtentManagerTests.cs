@@ -107,9 +107,9 @@ public class ExtentManagerTests
 
         Assert.That(Movie.Extent.Count, Is.EqualTo(2));
         Assert.That(Genre.Extent.Count, Is.EqualTo(2));
-
+        Console.WriteLine(Movie.Extent.Where(name => name.Name == "Inception"));
         Assert.That(Movie.Extent.First().Name, Is.EqualTo("Inception"));
-        Assert.That(Movie.Extent.Last().Genres.Count, Is.EqualTo(2));
+        Assert.That(Movie.Extent.Last().Genres.Count, Is.EqualTo(2));   
     }
 
     [Test]

@@ -6,15 +6,38 @@ public class Movie
 {
     private static readonly List<Movie> _extent = new();
     public static IReadOnlyList<Movie> Extent => _extent.AsReadOnly();
-
+    
     private string _name = null!;
     private decimal _duration;
-    private List<Genre> _genres = new();
-    private List<string>? _languages;
-    private DateTime _releaseDate;
     
+    private readonly List<Genre> _genres = new();
+    public List<Genre> Genres { get; set; } = new();
+
+    private List<string>? _languages = new();
+    public List<string>? Languages
+    {
+        get => _languages;
+        set
+        {
+            if (value is null)
+            {
+                _languages = null;
+                return;
+            }
+
+            foreach (var lang in value)
+            {
+                if (!Regex.IsMatch(lang, @"^[A-Za-z]+$"))
+                    throw new ArgumentException("Language must contain only letters.");
+            }
+
+            _languages = value;
+        }
+    }
+    private DateTime _releaseDate;
+
     private static readonly int DefaultMinAge = 3;
-    private int _minAge;
+    private int _minAge = DefaultMinAge;
 
     public int MinAge
     {
@@ -36,7 +59,7 @@ public class Movie
             if (string.IsNullOrWhiteSpace(value) ||
                 !Regex.IsMatch(value, @"^[A-Za-z ]+$"))
             {
-                throw new ArgumentException("Name must contain only letters.");
+                throw new ArgumentException("Name must contain only letters and spaces.");
             }
 
             _name = value;
@@ -55,17 +78,7 @@ public class Movie
         }
     }
 
-    public List<Genre> Genres
-    {
-        get => _genres;
-        set
-        {
-            if (value is null || value.Count < 1)
-                throw new ArgumentException("Movie must have at least one genre.");
 
-            _genres = value;
-        }
-    }
 
     public DateTime ReleaseDate
     {
@@ -79,50 +92,69 @@ public class Movie
         }
     }
 
-    public List<string>? Languages
-    {
-        get => _languages;
-        set
-        {
-            if (value is null)
-            {
-                _languages = null;
-                return;
-            }
 
-            foreach (var lang in value)
-            {
-                if (!Regex.IsMatch(lang, @"^[A-Za-z]+$"))
-                    throw new ArgumentException("Language must contain only letters.");
-            }
-
-            _languages = value;
-        }
-    }
     
     public Movie()
     {
-        _genres = new List<Genre>();
-        _languages = new List<string>();
     }
-    
-    public Movie(
-        string name,
-        decimal duration,
-        List<Genre> genres,
-        DateTime releaseDate,
-        List<string>? languages,
-        int? minAge
-    )
+
+    public Movie(string name, decimal duration, IEnumerable<Genre> genres, DateTime releaseDate, IEnumerable<string>? languages, int? minAge = null)
     {
         Name = name;
         Duration = duration;
-        Genres = genres;
         ReleaseDate = releaseDate;
-        Languages = languages;
-        MinAge = minAge ?? DefaultMinAge;
+        MinAge = minAge ?? 3;
 
+        if (genres == null || !genres.Any())
+            throw new ArgumentException("Movie must have at least one genre.");
+
+        Genres.AddRange(genres);
+
+        if(languages == null)
+            _languages = null;
+        else
+        {
+            foreach (var lang in languages)
+            {
+                AddLanguage(lang);
+            }
+        }
+        
         _extent.Add(this);
+    }
+
+    public void AddGenre(Genre genre)
+    {
+        if (genre == null) throw new ArgumentNullException(nameof(genre));
+        if (_genres.Contains(genre)) return;
+
+        _genres.Add(genre);
+        genre.AddMovieInternal(this);
+    }
+
+    public void RemoveGenre(Genre genre)
+    {
+        if (genre == null) throw new ArgumentNullException(nameof(genre));
+        if (!_genres.Remove(genre)) return;
+
+        genre.RemoveMovieInternal(this);
+    }
+    
+    public void AddLanguage(string language)
+    {
+        if (string.IsNullOrWhiteSpace(language) ||
+            !Regex.IsMatch(language, @"^[A-Za-z]+$"))
+        {
+            throw new ArgumentException("Language must contain only letters.", nameof(language));
+        }
+
+        if (!_languages.Contains(language))
+            _languages.Add(language);
+    }
+
+    public void RemoveLanguage(string language)
+    {
+        _languages.Remove(language);
     }
     
     public static void LoadExtent(List<Movie>? movies)
