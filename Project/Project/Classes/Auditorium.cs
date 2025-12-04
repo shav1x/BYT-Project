@@ -89,7 +89,10 @@ public class Auditorium
     public void RemoveSeat(Seat seat)
     {
         if (_seats.Contains(seat))
+        {
             _seats.Remove(seat);
+            seat.Remove();
+        }
     }
 
     public void Remove()
@@ -97,12 +100,13 @@ public class Auditorium
         foreach (var seat in _seats.ToList())
         {
             seat.Remove();
+            _seats.Remove(seat);
         }
         
-        if (_screeningProfile != null) // Check for null before acting on _screeningProfile
+        if (_screeningProfile != null)
         {
             _screeningProfile.SetAuditorium(null);
-            _screeningProfile = null; // Clear only if it was assigned
+            _screeningProfile = null;
         }
         
         _extent.Remove(this);

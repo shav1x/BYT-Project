@@ -82,9 +82,11 @@ public class Seat
     
     public void Remove()
     {
-        _extent.Remove(this);
-        _auditorium?.RemoveSeat(this);
-        _auditorium = null;
+        if (_auditorium != null)
+        {
+            _auditorium.RemoveSeat(this);
+            _extent.Remove(this);
+        }
     }
 
     ~Seat()

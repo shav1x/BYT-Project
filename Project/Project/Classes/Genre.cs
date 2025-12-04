@@ -37,7 +37,7 @@ public class Genre
         _extent.Add(this);
     }
 
-    internal void AddMovieInternal(Movie movie)
+    public void AddMovie(Movie movie)
     {
         if (movie == null) throw new ArgumentNullException(nameof(movie));
         if (_movies.Contains(movie)) return;
@@ -45,7 +45,7 @@ public class Genre
         _movies.Add(movie);
     }
 
-    internal void RemoveMovieInternal(Movie movie)
+    public void RemoveMovie(Movie movie)
     {
         _movies.Remove(movie);
     }
