@@ -9,6 +9,9 @@ public class Seat
         Comfort
     }
     
+    private static readonly List<Seat> _extent = new();
+    public static IReadOnlyList<Seat> Extent => _extent.AsReadOnly();
+    
     private int _number;
     private int _row;
     private SeatType _type;
@@ -50,5 +53,17 @@ public class Seat
         Number = number;
         Row = row;
         Type = type;
+        _extent.Add(this);
     }
+    
+    public static void LoadExtent(List<Seat>? seats)
+    {
+        _extent.Clear();
+
+        if (seats is null || seats.Count == 0)
+            return;
+
+        _extent.AddRange(seats);
+    }
+    
 }
