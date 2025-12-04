@@ -10,6 +10,9 @@ public class Auditorium
     private int _number;
     private string _name = null!;
     
+    private readonly List<Seat> _seats = new();
+    public IReadOnlyList<Seat> Seats => _seats.AsReadOnly();
+    
     public int Number 
     {
         get => _number;
@@ -53,6 +56,33 @@ public class Auditorium
             return;
 
         _extent.AddRange(auditoriums);
+    }
+    
+    public void AddSeat(Seat seat)
+    {
+        if (!_seats.Contains(seat))
+            _seats.Add(seat);
+    }
+
+    public void RemoveSeat(Seat seat)
+    {
+        if (_seats.Contains(seat))
+            _seats.Remove(seat);
+    }
+
+    public void Remove()
+    {
+        foreach (var seat in _seats.ToList())
+        {
+            seat.Remove();
+        }
+        
+        _extent.Remove(this);
+    }
+
+    ~Auditorium()
+    {
+        Remove();
     }
     
 }

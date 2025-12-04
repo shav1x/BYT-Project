@@ -15,6 +15,18 @@ public class Seat
     private int _number;
     private int _row;
     private SeatType _type;
+    
+    private Auditorium? _auditorium;
+    public Auditorium Auditorium
+    {
+        get => _auditorium ?? throw new InvalidOperationException("Seat must be associated with an Auditorium.");
+        private set
+        {
+            if (value == null)
+                throw new ArgumentException("A Seat cannot exist without an Auditorium.");
+            _auditorium = value;
+        }
+    }
 
     public int Number
     {
@@ -48,12 +60,14 @@ public class Seat
         }
     }
     
-    public Seat(int number, int row, SeatType type)
+    public Seat(int number, int row, SeatType type, Auditorium auditorium)
     {
         Number = number;
         Row = row;
         Type = type;
+        Auditorium = auditorium;
         _extent.Add(this);
+        auditorium.AddSeat(this);
     }
     
     public static void LoadExtent(List<Seat>? seats)
@@ -64,6 +78,18 @@ public class Seat
             return;
 
         _extent.AddRange(seats);
+    }
+    
+    public void Remove()
+    {
+        _extent.Remove(this);
+        _auditorium?.RemoveSeat(this);
+        _auditorium = null;
+    }
+
+    ~Seat()
+    {
+        Remove();
     }
     
 }
