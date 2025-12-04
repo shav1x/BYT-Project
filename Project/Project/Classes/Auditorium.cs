@@ -61,8 +61,11 @@ public class Auditorium
         
         if (profile.Auditorium is not null && profile.Auditorium != this)
             throw new InvalidOperationException("The selected Screening Profile is already in use by another Auditorium.");
-        
-        _screeningProfile.SetAuditorium(null);
+        if (_screeningProfile != null)
+        {
+            _screeningProfile.SetAuditorium(null);
+        }
+
         _screeningProfile = profile;
         _screeningProfile.SetAuditorium(this);
     }
@@ -96,7 +99,11 @@ public class Auditorium
             seat.Remove();
         }
         
-        _screeningProfile.SetAuditorium(null);
+        if (_screeningProfile != null) // Check for null before acting on _screeningProfile
+        {
+            _screeningProfile.SetAuditorium(null);
+            _screeningProfile = null; // Clear only if it was assigned
+        }
         
         _extent.Remove(this);
     }
