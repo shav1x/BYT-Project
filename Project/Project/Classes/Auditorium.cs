@@ -10,6 +10,9 @@ public class Auditorium
     private int _number;
     private string _name = null!;
     
+    private ScreeningProfile _screeningProfile = null!; 
+    public ScreeningProfile ScreeningProfile => _screeningProfile;
+    
     private readonly List<Seat> _seats = new();
     public IReadOnlyList<Seat> Seats => _seats.AsReadOnly();
     
@@ -39,13 +42,29 @@ public class Auditorium
         }
     }
     
-    public Auditorium() { }
+    protected Auditorium() { }
     
-    public Auditorium(int number, string name)
+    public Auditorium(int number, 
+        string name, 
+        ScreeningProfile screeningProfile)
     {
         Number = number;
         Name = name;
+        SetScreeningProfile(screeningProfile);
         _extent.Add(this);
+    }
+    
+    public void SetScreeningProfile(ScreeningProfile profile)
+    {
+        if (profile is null)
+            throw new ArgumentNullException(nameof(profile), "Auditorium must have a screening profile (Multiplicity 1).");
+        
+        if (profile.Auditorium is not null && profile.Auditorium != this)
+            throw new InvalidOperationException("The selected Screening Profile is already in use by another Auditorium.");
+        
+        _screeningProfile.SetAuditorium(null);
+        _screeningProfile = profile;
+        _screeningProfile.SetAuditorium(this);
     }
     
     public static void LoadExtent(List<Auditorium>? auditoriums)
@@ -77,6 +96,8 @@ public class Auditorium
             seat.Remove();
         }
         
+        _screeningProfile.SetAuditorium(null);
+        
         _extent.Remove(this);
     }
 
@@ -84,5 +105,4 @@ public class Auditorium
     {
         Remove();
     }
-    
 }

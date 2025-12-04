@@ -1,4 +1,6 @@
 ﻿using Project.Classes;
+using Project.Classes.AudioFormat;
+using Project.Classes.PictureFormat;
 
 namespace ProjectTests;
 
@@ -10,7 +12,9 @@ public class SeatTests
     [SetUp]
     public void SetUp()
     {
-        _auditorium = new Auditorium(1, "Main Hall");
+        _auditorium = new Auditorium(1, "Main Hall",
+            new ScreeningProfile(ScreeningProfile.ResolutionType.FullHD, 60, new Stereo("codec"),
+                new FormatImax(true)));
     }
 
     [Test]

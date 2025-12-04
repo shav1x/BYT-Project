@@ -5,7 +5,6 @@ namespace Project.Classes;
 
 public class ScreeningProfile
 {
-    
     private static readonly List<ScreeningProfile> _extent = new();
     public static IReadOnlyList<ScreeningProfile> Extent => _extent.AsReadOnly();
     
@@ -20,6 +19,10 @@ public class ScreeningProfile
 
     private ResolutionType _resolution;
     private int _framerate;
+    
+    private Auditorium? _auditorium; 
+    public Auditorium? Auditorium => _auditorium;
+
     public IAudioFormat AudioFormat { get; private set; }
     public IPictureFormat PictureFormat { get; private set; }
 
@@ -66,4 +69,19 @@ public class ScreeningProfile
         _extent.AddRange(screeningProfiles);
     }
     
+    public void SetAuditorium(Auditorium? auditorium)
+    {
+        if (auditorium is null)
+        {
+            _auditorium = null;
+            return;
+        }
+        
+        if (_auditorium is not null && _auditorium != auditorium)
+        {
+            throw new InvalidOperationException("This ScreeningProfile is already assigned to another Auditorium.");
+        }
+
+        _auditorium = auditorium;
+    }
 }
