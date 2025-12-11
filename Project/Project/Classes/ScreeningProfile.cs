@@ -71,17 +71,22 @@ public class ScreeningProfile
     
     public void SetAuditorium(Auditorium? auditorium)
     {
-        if (auditorium is null)
+        if (_auditorium == auditorium)
+            return;
+
+        if (auditorium == null)
         {
             _auditorium = null;
             return;
         }
         
-        if (_auditorium is not null && _auditorium != auditorium)
-        {
-            throw new InvalidOperationException("This ScreeningProfile is already assigned to another Auditorium.");
-        }
+        if (_auditorium != null && _auditorium != auditorium)
+            throw new InvalidOperationException(
+                "This ScreeningProfile is already assigned to another Auditorium.");
 
         _auditorium = auditorium;
+
+        if (auditorium.ScreeningProfile != this)
+            auditorium.SetScreeningProfile(this);
     }
 }

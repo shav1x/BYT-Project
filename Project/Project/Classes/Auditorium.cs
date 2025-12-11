@@ -56,18 +56,26 @@ public class Auditorium
     
     public void SetScreeningProfile(ScreeningProfile profile)
     {
-        if (profile is null)
-            throw new ArgumentNullException(nameof(profile), "Auditorium must have a screening profile (Multiplicity 1).");
+        if (profile == null)
+            throw new ArgumentNullException(nameof(profile), 
+                "Auditorium must always have a ScreeningProfile (multiplicity 1).");
         
-        if (profile.Auditorium is not null && profile.Auditorium != this)
-            throw new InvalidOperationException("The selected Screening Profile is already in use by another Auditorium.");
-        if (_screeningProfile != null)
+        if (profile.Auditorium != null && profile.Auditorium != this)
+            throw new InvalidOperationException(
+                "This ScreeningProfile is already assigned to another Auditorium.");
+
+        if (_screeningProfile != null && _screeningProfile != profile)
         {
-            _screeningProfile.SetAuditorium(null);
+            var old = _screeningProfile;
+            _screeningProfile = null;
+            
+            old.SetAuditorium(null);
         }
 
         _screeningProfile = profile;
-        _screeningProfile.SetAuditorium(this);
+
+        if (profile.Auditorium != this)
+            profile.SetAuditorium(this);
     }
     
     public static void LoadExtent(List<Auditorium>? auditoriums)
