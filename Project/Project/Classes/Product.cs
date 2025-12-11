@@ -13,6 +13,9 @@ public class Product
     private bool _availability;
     private string? _description;
     
+    private ProductCatalog? _catalog;
+    public ProductCatalog? Catalog => _catalog;
+    
     public string Name
     {
         get => _name;
@@ -114,7 +117,40 @@ public class Product
         }
     }
 
+    public void AddToProductCatalog(ProductCatalog catalog)
+    {
+        if (catalog == null) throw new ArgumentNullException(nameof(catalog));
 
+        if (_catalog == catalog)
+            return;
+
+        if (_catalog != null)
+            throw new InvalidOperationException("Product already belongs to another catalog.");
+
+        _catalog = catalog;
+
+        if (!catalog.Products.ContainsValue(this))
+            catalog.Products.Add(Name, this);
+        
+        if (!catalog.Products.ContainsKey(Name))
+            catalog.AddProduct(this);
+    }
+
+    public void RemoveFromProductCatalog(ProductCatalog catalog)
+    {
+        if (catalog == null) throw new ArgumentNullException(nameof(catalog));
+        if (_catalog != catalog)
+            throw new ArgumentException("This product does not belong to the given catalog.");
+
+        _catalog = null;
+
+        if (catalog.Products.ContainsKey(Name))
+            catalog.Products.Remove(Name);
+        
+        if (catalog.Products.ContainsValue(this))
+            catalog.RemoveProduct(this);
+    }
+    
     public Product()
     {
     }
@@ -125,6 +161,7 @@ public class Product
         Price = price;
         Availability = availability;
         Description = description;
+        
 
         _extent.Add(this);
     }
