@@ -80,6 +80,12 @@ public class Auditorium
         _extent.AddRange(auditoriums);
     }
     
+    
+    public Seat CreateSeat(int number, int row, Seat.SeatType type)
+    {
+        return Seat.Create(this, number, row, type);
+    }
+    
     public void AddSeat(Seat seat)
     {
         if (!_seats.Contains(seat))

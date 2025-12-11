@@ -17,6 +17,9 @@ public class SeatTests
                 new FormatImax(true)));
     }
 
+    private Seat CreateSeat(int number, int row, Seat.SeatType type)
+        => _auditorium.CreateSeat(number, row, type);
+
     [Test]
     public void Constructor_ValidData_InitializesSeatCorrectly()
     {
@@ -39,7 +42,6 @@ public class SeatTests
     public void Constructor_ValidSeatNumber_ShouldSetSeatNumberCorrectly(int number)
     {
         var seat = CreateSeat(number, 3, Seat.SeatType.Standard);
-
         Assert.That(seat.Number, Is.EqualTo(number));
     }
 
@@ -57,7 +59,6 @@ public class SeatTests
     public void Constructor_ValidSeatRow_ShouldSetRowCorrectly(int row)
     {
         var seat = CreateSeat(5, row, Seat.SeatType.Standard);
-
         Assert.That(seat.Row, Is.EqualTo(row));
     }
 
@@ -75,7 +76,6 @@ public class SeatTests
     public void Constructor_ValidSeatType_ShouldSetTypeCorrectly(Seat.SeatType type)
     {
         var seat = CreateSeat(5, 3, type);
-
         Assert.That(seat.Type, Is.EqualTo(type));
     }
 
@@ -90,7 +90,8 @@ public class SeatTests
     [Test]
     public void Constructor_NullAuditorium_ThrowsArgumentException()
     {
-        Assert.Throws<ArgumentException>(() => new Seat(5, 3, Seat.SeatType.VIP, null!));
+        Assert.Throws<ArgumentNullException>(() =>
+            Seat.Create(null!, 5, 3, Seat.SeatType.VIP));
     }
 
     [Test]
@@ -105,10 +106,5 @@ public class SeatTests
             Assert.That(Seat.Extent, Does.Not.Contain(seat));
             Assert.That(_auditorium.Seats, Does.Not.Contain(seat));
         });
-    }
-
-    private Seat CreateSeat(int number, int row, Seat.SeatType type)
-    {
-        return new Seat(number, row, type, _auditorium);
     }
 }

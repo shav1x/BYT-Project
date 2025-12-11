@@ -60,14 +60,24 @@ public class Seat
         }
     }
     
-    public Seat(int number, int row, SeatType type, Auditorium auditorium)
+    private Seat(int number, int row, SeatType type, Auditorium auditorium)
     {
         Number = number;
         Row = row;
         Type = type;
-        Auditorium = auditorium;
+        _auditorium = auditorium;
+
         _extent.Add(this);
-        auditorium.AddSeat(this);
+    }
+
+    public static Seat Create(Auditorium auditorium, int number, int row, SeatType type)
+    {
+        if (auditorium == null)
+            throw new ArgumentNullException(nameof(auditorium));
+        
+        var seat = new Seat(number, row, type, auditorium);
+        auditorium.AddSeat(seat);
+        return seat;
     }
     
     public static void LoadExtent(List<Seat>? seats)

@@ -25,22 +25,22 @@ public class AuditoriumAssociationTests
     [Test]
     public void AddSeat_ValidSeat_AddedToAuditorium()
     {
-        var seat = new Seat(101, 1, Seat.SeatType.VIP, _auditorium);
+        var seat = _auditorium.CreateSeat(101, 1, Seat.SeatType.VIP);
 
         Assert.Multiple(() =>
         {
             Assert.That(_auditorium.Seats, Contains.Item(seat));
             Assert.That(seat.Auditorium, Is.EqualTo(_auditorium));
         });
-            
+
         seat.Remove();
     }
 
     [Test]
     public void RemoveSeat_ValidSeat_RemovedFromAuditorium()
     {
-        var seat = new Seat(101, 1, Seat.SeatType.VIP, _auditorium);
-            
+        var seat = _auditorium.CreateSeat(101, 1, Seat.SeatType.VIP);
+
         _auditorium.RemoveSeat(seat);
 
         Assert.Multiple(() =>
@@ -58,7 +58,7 @@ public class AuditoriumAssociationTests
             60,
             new Stereo("Legacy Codec"),
             new ThreeD(false));
-            
+
         _auditorium.SetScreeningProfile(newProfile);
 
         Assert.That(_auditorium.ScreeningProfile, Is.EqualTo(newProfile));
@@ -71,14 +71,15 @@ public class AuditoriumAssociationTests
         _screeningProfile.SetAuditorium(null);
         var anotherAuditorium = new Auditorium(2, "Secondary Hall", _screeningProfile);
 
-        Assert.Throws<InvalidOperationException>(() => 
+        Assert.Throws<InvalidOperationException>(() =>
             _auditorium.SetScreeningProfile(_screeningProfile));
     }
 
     [Test]
     public void RemoveAuditorium_SeatsAndProfileCleared()
     {
-        var seat = new Seat(101, 1, Seat.SeatType.VIP, _auditorium);
+        var seat = _auditorium.CreateSeat(101, 1, Seat.SeatType.VIP);
+
         _auditorium.Remove();
 
         Assert.Multiple(() =>
@@ -87,18 +88,18 @@ public class AuditoriumAssociationTests
             Assert.That(_screeningProfile.Auditorium, Is.Null);
         });
     }
-    
+
     [Test]
-    public void Seat_WithoutAuditorium_ThrowsArgumentException()
+    public void Seat_WithoutAuditorium_CannotBeCreated()
     {
-        Assert.Throws<ArgumentException>(() =>
-            new Seat(100, 1, Seat.SeatType.VIP, null!));
+        Assert.Throws<ArgumentNullException>(() =>
+            Seat.Create(null!, 10, 1, Seat.SeatType.VIP));
     }
-    
+
     [Test]
     public void RemoveSeat_ClearsBidirectionalAssociation()
     {
-        var seat = new Seat(10, 1, Seat.SeatType.Standard, _auditorium);
+        var seat = _auditorium.CreateSeat(10, 1, Seat.SeatType.Standard);
 
         seat.Remove();
 
@@ -106,21 +107,20 @@ public class AuditoriumAssociationTests
         {
             Assert.That(_auditorium.Seats, Does.Not.Contain(seat));
             Assert.That(Seat.Extent, Does.Not.Contain(seat));
-            Assert.Throws<InvalidOperationException>(() => { var _ = seat.Auditorium; });
         });
     }
-    
+
     [Test]
     public void AddSeat_SameSeatTwice_ShouldNotDuplicate()
     {
-        var seat = new Seat(1, 1, Seat.SeatType.VIP, _auditorium);
+        var seat = _auditorium.CreateSeat(1, 1, Seat.SeatType.VIP);
 
         _auditorium.AddSeat(seat);
         _auditorium.AddSeat(seat);
 
         Assert.That(_auditorium.Seats.Count, Is.EqualTo(1));
     }
-    
+
     [Test]
     public void ScreeningProfile_CannotBeAssignedToTwoAuditoriums()
     {
@@ -133,12 +133,12 @@ public class AuditoriumAssociationTests
         Assert.Throws<InvalidOperationException>(() =>
             secondHall.SetScreeningProfile(_screeningProfile));
     }
-    
+
     [Test]
     public void RemoveAuditorium_DestroysSeatsAndClearsProfile()
     {
-        var seat1 = new Seat(1, 1, Seat.SeatType.Standard, _auditorium);
-        var seat2 = new Seat(2, 1, Seat.SeatType.VIP, _auditorium);
+        _auditorium.CreateSeat(1, 1, Seat.SeatType.Standard);
+        _auditorium.CreateSeat(2, 1, Seat.SeatType.VIP);
 
         _auditorium.Remove();
 
