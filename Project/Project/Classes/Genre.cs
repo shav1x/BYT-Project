@@ -39,15 +39,23 @@ public class Genre
 
     public void AddMovie(Movie movie)
     {
-        if (movie == null) throw new ArgumentNullException(nameof(movie));
-        if (_movies.Contains(movie)) return;
+        if (movie == null)
+            throw new ArgumentNullException(nameof(movie));
+
+        if (_movies.Contains(movie))
+            return;
 
         _movies.Add(movie);
+        
+        if (!movie.Genres.Contains(this))
+            movie.AddGenre(this);
     }
-
     public void RemoveMovie(Movie movie)
     {
-        _movies.Remove(movie);
+        if (!_movies.Remove(movie)) return;
+
+        if (movie.Genres.Contains(this))
+            movie.RemoveGenre(this);
     }
 
     public static void LoadExtent(List<Genre>? genres)

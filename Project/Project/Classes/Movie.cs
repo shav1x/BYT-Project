@@ -129,11 +129,16 @@ public class Movie
 
     public void AddGenre(Genre genre)
     {
-        if (genre == null) throw new ArgumentNullException(nameof(genre));
-        if (Genres.Contains(genre)) return;
+        if (genre == null)
+            throw new ArgumentNullException(nameof(genre));
+
+        if (Genres.Contains(genre))
+            return;
 
         Genres.Add(genre);
-        genre.AddMovie(this);
+        
+        if (!genre.Movies.Contains(this))
+            genre.AddMovie(this);
     }
 
     public void RemoveGenre(Genre genre)
@@ -141,7 +146,8 @@ public class Movie
         if (genre == null) throw new ArgumentNullException(nameof(genre));
         if (!Genres.Remove(genre)) return;
 
-        genre.RemoveMovie(this);
+        if (genre.Movies.Contains(this))
+            genre.RemoveMovie(this);
     }
     
     public void AddLanguage(string language)
