@@ -16,6 +16,10 @@ public class Product
     private ProductCatalog? _catalog;
     public ProductCatalog? Catalog => _catalog;
     
+    private readonly List<OrderItem> _orderItems = new();
+
+    public List<OrderItem> OrderItems => _orderItems;
+    
     public string Name
     {
         get => _name;
@@ -149,6 +153,66 @@ public class Product
         
         if (catalog.Products.ContainsValue(this))
             catalog.RemoveProduct(this);
+    }
+    
+    
+    public OrderItem AddOrder(Order order, int quantity, OrderItem? item = null)
+    {
+        if (order == null) 
+            throw new ArgumentNullException(nameof(order));
+
+        if (item == null)
+        {
+            foreach (var existing in _orderItems)
+            {
+                if (existing.Order == order)
+                    return existing; 
+            }
+
+            item = new OrderItem(this, order, quantity);
+            _orderItems.Add(item);
+
+            order.AddProduct(this, quantity, item);
+            return item;
+        }
+        else
+        {
+            if (!_orderItems.Contains(item))
+            {
+                _orderItems.Add(item);
+                order.AddProduct(this, quantity, item);
+            }
+
+            return item;
+        }
+    }
+
+    public void RemoveOrder(Order order, OrderItem? item = null)
+    {
+        if (order == null)
+            throw new ArgumentNullException(nameof(order));
+            
+        if (item != null)
+        {
+            _orderItems.Remove(item);
+            return;
+        }
+            
+        OrderItem? found = null;
+        foreach (var oi in _orderItems)
+        {
+            if (oi.Order == order)
+            {
+                found = oi;
+                break;
+            }
+        }
+
+        if (found == null) return;
+
+        _orderItems.Remove(found);
+            
+        order.RemoveProduct(this, found);
     }
     
     public Product()
