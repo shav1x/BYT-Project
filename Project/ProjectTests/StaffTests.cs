@@ -11,14 +11,14 @@ public class StaffTests
     [TestCase("Support")]
     public void StaffRole_ValidRole_True(string role)
     {
-        var staff = new Staff(
+        var staff = new Person(
             "Andrii", "Meshcheriakov", DateTime.Now.AddYears(-20),
             "ma@gmail.com",
             new Phone("+48", "484848484"),
             role, 1200
         );
 
-        Assert.That(staff.Role, Is.EqualTo(role));
+        Assert.That(staff.Staff?.Role, Is.EqualTo(role));
     }
 
     [TestCase("")]
@@ -27,7 +27,7 @@ public class StaffTests
     public void StaffRole_InvalidRole_ThrowsException(string? role)
     {
         Assert.That(
-            () => new Staff(
+            () => new Person(
                 "Andrii", "Meshcheriakov", DateTime.Now.AddYears(-20),
                 "ma@gmail.com",
                 new Phone("+48", "484848484"),
@@ -42,14 +42,14 @@ public class StaffTests
     [TestCase(999.50)]
     public void StaffSalary_ValidSalary_True(decimal salary)
     {
-        var staff = new Staff(
+        var staff = new Person(
             "Andrii", "Meshcheriakov", DateTime.Now.AddYears(-20),
             "test@gmail.com",
             new Phone("+48", "484848484"),
             "Developer", salary
         );
 
-        Assert.That(staff.Salary, Is.EqualTo(salary));
+        Assert.That(staff.Staff?.Salary, Is.EqualTo(salary));
     }
 
     [TestCase(0)]
@@ -58,7 +58,7 @@ public class StaffTests
     public void StaffSalary_InvalidSalary_ThrowsException(decimal salary)
     {
         Assert.That(
-            () => new Staff(
+            () => new Person(
                 "Andrii", "Meshcheriakov", DateTime.Now.AddYears(-20),
                 "ma@gmail.com",
                 new Phone("+48", "484848484"),
@@ -73,7 +73,7 @@ public class StaffTests
     {
         var phone = new Phone("+48", "999111222");
     
-        var staff = new Staff(
+        var staff = new Person(
             "Andrii", "Meshcheriakov",
             DateTime.Now.AddYears(-20),
             "test@gmail.com",
@@ -88,7 +88,7 @@ public class StaffTests
     [Test]
     public void StaffPhone_NullPhone_AssignedCorrectly()
     {
-        var staff = new Staff(
+        var staff = new Person(
             "Andrii", "Meshcheriakov",
             DateTime.Now.AddYears(-20),
             "test@gmail.com",

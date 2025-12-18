@@ -1,12 +1,13 @@
 namespace Project.Classes;
 
-public class Staff : Person
+public class Staff
 {
     private static readonly List<Staff> _extent = new();
     public static IReadOnlyList<Staff> Extent => _extent.AsReadOnly();
 
     private decimal _salary;
     private string _role = null!;
+    public Person Person { get; set; } = null!;
 
     public decimal Salary
     {
@@ -37,15 +38,12 @@ public class Staff : Person
     }
 
     public Staff(
-        string name,
-        string surname,
-        DateTime birthDate,
-        string email,
-        Phone? phone,
+        Person person,
         string role,
         decimal salary
-    ) : base(name, surname, birthDate, email, phone)
+    )
     {
+        Person = person ?? throw new ArgumentNullException(nameof(person));
         Role = role;
         Salary = salary;
 

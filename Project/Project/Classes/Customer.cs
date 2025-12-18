@@ -1,12 +1,13 @@
 ﻿namespace Project.Classes;
 
-public class Customer : Person
+public class Customer
 {
     private static readonly List<Customer> _extent = new();
     public static IReadOnlyList<Customer> Extent => _extent.AsReadOnly();
     
     private static int _lastAccountId = 0;
     public int AccountId { get; set; }
+    public Person Person { get; set; } = null!;
 
     private int _bonusPoints;
     public int BonusPoints
@@ -26,13 +27,10 @@ public class Customer : Person
     }
 
     public Customer(
-        string name,
-        string surname,
-        DateTime birthDate,
-        string email,
-        Phone? phone
-    ) : base(name, surname, birthDate, email, phone)
+        Person person
+    )
     {
+        Person = person ?? throw new ArgumentNullException(nameof(person));
         AccountId = ++_lastAccountId;
         BonusPoints = 0;
 

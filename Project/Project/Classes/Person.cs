@@ -2,14 +2,16 @@ using System.Text.RegularExpressions;
 
 namespace Project.Classes;
 
-public abstract class Person
+public class Person
 {
     private string _name = null!;
     private string _surname = null!;
     private string _email = null!;
     private Phone? _phone;
-    
     private DateTime _birthDate;
+    
+    public Staff? Staff { get; }
+    public Customer? Customer { get; }
 
     public int Age =>
         DateTime.Today.Year - BirthDate.Year -
@@ -75,19 +77,47 @@ public abstract class Person
         }
     }
     
-    protected Person() { }
+    public Person() { }
 
-    protected Person(
+    // Staff or staff + customer constructor
+    public Person(
         string name,
         string surname,
         DateTime birthDate,
         string email,
-        Phone? phone)
+        Phone? phone,
+        string staffRole,
+        decimal salary,
+        bool alsoCustomer = false)
     {
         Name = name;
         Surname = surname;
         BirthDate = birthDate;
         Email = email;
         Phone = phone;
+        
+        Staff = new Staff(this, staffRole, salary);
+        
+        if (alsoCustomer)
+            Customer = new Customer(this);
     }
+    
+    // Customer constructor
+    public Person(
+        string name,
+        string surname,
+        DateTime birthDate,
+        string email,
+        Phone? phone
+        )
+    {
+        Name = name;
+        Surname = surname;
+        BirthDate = birthDate;
+        Email = email;
+        Phone = phone;
+        
+        Customer = new Customer(this);
+    }
+    
 }

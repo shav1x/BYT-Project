@@ -62,14 +62,14 @@ public class ExtentManagerTests
     [Test]
     public void SaveAndLoad_RestoresCustomers()
     {
-        var c1 = new Customer(
+        var c1 = new Person(
             "Andrii", "Meshcheriakov",
             DateTime.Now.AddYears(-20),
             "mail@mail.com",
             new Phone("+1", "12345")
         );
 
-        var c2 = new Customer(
+        var c2 = new Person(
             "Bohdan", "Milashevskyi",
             DateTime.Now.AddYears(-30),
             "gg@mail.com",
@@ -85,8 +85,8 @@ public class ExtentManagerTests
         ExtentManager.LoadAll();
 
         Assert.That(Customer.Extent.Count, Is.EqualTo(2));
-        Assert.That(Customer.Extent.First().Name, Is.EqualTo("Andrii"));
-        Assert.That(Customer.Extent.Last().Email, Is.EqualTo("gg@mail.com"));
+        Assert.That(Customer.Extent.First().Person.Name, Is.EqualTo("Andrii"));
+        Assert.That(Customer.Extent.Last().Person.Email, Is.EqualTo("gg@mail.com"));
     }
 
     [Test]

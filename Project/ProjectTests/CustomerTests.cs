@@ -10,7 +10,7 @@ public class CustomerTests
     {
         var phone = new Phone("+48", "712345678");
 
-        var customer = new Customer("Ben", "Ten", DateTime.Now.AddYears(-20),
+        var customer = new Person("Ben", "Ten", DateTime.Now.AddYears(-20),
             "mail@gmail.com", phone);
 
         Assert.That(customer.Name, Is.EqualTo("Ben"));
@@ -27,7 +27,7 @@ public class CustomerTests
     [TestCase("name")]
     public void CustomerName_ValidName_True(string name)
     {
-        var customer = new Customer(name, "Smith", DateTime.Now.AddYears(-20),
+        var customer = new Person(name, "Smith", DateTime.Now.AddYears(-20),
             "mail@gmail.com", new Phone("+1", "2345678"));
 
         Assert.That(customer.Name, Is.EqualTo(name));
@@ -40,7 +40,7 @@ public class CustomerTests
     public void CustomerName_InvalidName_ThrowsArgumentException(string name)
     {
         Assert.That(
-            () => new Customer(name, "Smith", DateTime.Now.AddYears(-20),
+            () => new Person(name, "Smith", DateTime.Now.AddYears(-20),
                 "mail@gmail.com", new Phone("+1", "2345678")),
             Throws.TypeOf<ArgumentException>()
         );
@@ -52,7 +52,7 @@ public class CustomerTests
     [TestCase("sdsashiosdfn@mail.ua")]
     public void CustomerEmail_ValidEmail_True(string email)
     {
-        var customer = new Customer("John", "Smith", DateTime.Now.AddYears(-20),
+        var customer = new Person("John", "Smith", DateTime.Now.AddYears(-20),
             email, new Phone("+1", "2345678"));
 
         Assert.That(customer.Email, Is.EqualTo(email));
@@ -66,7 +66,7 @@ public class CustomerTests
     public void CustomerEmail_InvalidEmail_ThrowsArgumentException(string email)
     {
         Assert.That(
-            () => new Customer("John", "Smith", DateTime.Now.AddYears(-20),
+            () => new Person("John", "Smith", DateTime.Now.AddYears(-20),
                 email, new Phone("+1", "2345678")),
             Throws.TypeOf<ArgumentException>()
         );
@@ -76,7 +76,7 @@ public class CustomerTests
     public void CustomerPhone_ValidPhone_AssignedCorrectly()
     {
         var phone = new Phone("+1", "55555");
-        var customer = new Customer("Ben", "Ten", DateTime.Now.AddYears(-20), "mail@gmail.com", phone);
+        var customer = new Person("Ben", "Ten", DateTime.Now.AddYears(-20), "mail@gmail.com", phone);
 
         Assert.That(customer.Phone, Is.EqualTo(phone));
     }
@@ -84,7 +84,7 @@ public class CustomerTests
     [Test]
     public void CustomerPhone_NullPhone_AssignedCorrectly()
     {
-        var customer = new Customer("Ben", "Ten", DateTime.Now.AddYears(-20), "mail@gmail.com", null);
+        var customer = new Person("Ben", "Ten", DateTime.Now.AddYears(-20), "mail@gmail.com", null);
         Assert.That(customer.Phone, Is.Null);
     }
 }
