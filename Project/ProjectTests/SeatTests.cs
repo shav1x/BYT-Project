@@ -13,8 +13,7 @@ public class SeatTests
     public void SetUp()
     {
         _auditorium = new Auditorium(1, "Main Hall",
-            new ScreeningProfile(ScreeningProfile.ResolutionType.FullHD, 60, new Stereo("codec"),
-                new FormatImax(true)));
+            new FormatImax(ScreeningProfile.ResolutionType.FullHD, 60, "codec", true));
     }
 
     private Seat CreateSeat(int number, int row, Seat.SeatType type)

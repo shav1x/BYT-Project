@@ -13,11 +13,11 @@ public class AuditoriumAssociationTests
     [SetUp]
     public void SetUp()
     {
-        _screeningProfile = new ScreeningProfile(
+        _screeningProfile = new FormatImax(
             ScreeningProfile.ResolutionType._4K,
             120,
-            new Stereo("Dolby Digital"),
-            new FormatImax(true));
+            "Dolby Digital",
+            true);
 
         _auditorium = new Auditorium(1, "Premium Auditorium", _screeningProfile);
     }
@@ -53,11 +53,11 @@ public class AuditoriumAssociationTests
     [Test]
     public void SetScreeningProfile_ValidProfile_ChangesAuditoriumProfile()
     {
-        var newProfile = new ScreeningProfile(
+        var newProfile = new ThreeD(
             ScreeningProfile.ResolutionType.FullHD,
             60,
-            new Stereo("Legacy Codec"),
-            new ThreeD(false));
+            "Legacy Codec",
+            false);
 
         _auditorium.SetScreeningProfile(newProfile);
 
@@ -124,11 +124,11 @@ public class AuditoriumAssociationTests
     [Test]
     public void ScreeningProfile_CannotBeAssignedToTwoAuditoriums()
     {
-        var secondHall = new Auditorium(2, "Blue Hall", new ScreeningProfile(
+        var secondHall = new Auditorium(2, "Blue Hall", new ThreeD(
             ScreeningProfile.ResolutionType.FullHD,
             30,
-            new Stereo("Legacy Codec"),
-            new ThreeD(false)));
+            "Legacy Codec",
+            false));
 
         Assert.Throws<InvalidOperationException>(() =>
             secondHall.SetScreeningProfile(_screeningProfile));

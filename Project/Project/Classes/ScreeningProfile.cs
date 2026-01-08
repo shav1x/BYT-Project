@@ -1,9 +1,8 @@
 using Project.Classes.AudioFormat;
-using Project.Classes.PictureFormat;
 
 namespace Project.Classes;
 
-public class ScreeningProfile
+public abstract class ScreeningProfile
 {
     private static readonly List<ScreeningProfile> _extent = new();
     public static IReadOnlyList<ScreeningProfile> Extent => _extent.AsReadOnly();
@@ -23,8 +22,17 @@ public class ScreeningProfile
     private Auditorium? _auditorium; 
     public Auditorium? Auditorium => _auditorium;
 
-    public IAudioFormat AudioFormat { get; private set; }
-    public IPictureFormat PictureFormat { get; private set; }
+    private object? _audioFormat;
+    public object AudioFormat
+    {
+        get => _audioFormat ?? throw new InvalidOperationException("ScreeningProfile must have an AudioFormat.");
+        private set
+        {
+            if (value == null)
+                throw new ArgumentException("Audio format cannot be null.");
+            _audioFormat = value;
+        }
+    }
 
     public ResolutionType Resolution
     {
@@ -48,14 +56,13 @@ public class ScreeningProfile
         }
     }
     
-    public bool GlassesRequired => PictureFormat is ThreeD or FormatImax;
+    public abstract bool GlassesRequired { get; }
 
-    public ScreeningProfile(ResolutionType resolution, int framerate, IAudioFormat audioFormat, IPictureFormat pictureFormat)
+    protected ScreeningProfile(ResolutionType resolution, int framerate, object audioFormat)
     {
         _resolution = resolution;
         _framerate = framerate;
         AudioFormat = audioFormat ?? throw new ArgumentNullException(nameof(audioFormat), "Audio format cannot be null.");
-        PictureFormat = pictureFormat ?? throw new ArgumentNullException(nameof(pictureFormat), "Picture format cannot be null.");
         _extent.Add(this);
     }
     
@@ -88,5 +95,41 @@ public class ScreeningProfile
 
         if (auditorium.ScreeningProfile != this)
             auditorium.SetScreeningProfile(this);
+    }
+    
+    public void RemoveAudioFormat()
+    {
+        if (_audioFormat != null)
+        {
+            if (_audioFormat is Dolby dolby)
+            {
+                _audioFormat = null;
+                dolby.Remove();
+            }
+            else if (_audioFormat is Stereo stereo)
+            {
+                _audioFormat = null;
+                stereo.Remove();
+            }
+        }
+    }
+    
+    public void Remove()
+    {
+        if (_auditorium != null)
+        {
+            _auditorium.SetScreeningProfile(null);
+            _auditorium = null;
+        }
+        
+        // Remove audio format (composition - audio format cannot exist without screening profile)
+        RemoveAudioFormat();
+        
+        _extent.Remove(this);
+    }
+    
+    ~ScreeningProfile()
+    {
+        Remove();
     }
 }
